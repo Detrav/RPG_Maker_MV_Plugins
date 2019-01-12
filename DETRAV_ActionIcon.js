@@ -39,7 +39,7 @@
 // define my own global variable
 var $Detrav = $Detrav || {};
 $Detrav.actionIcon = $Detrav.actionIcon || {};
-$Detrav.actionIcon.commands = $Detrav.actionIcon.commands || {};
+$Detrav.commands = $Detrav.actionIcon.commands || {};
 
 
 
@@ -57,7 +57,7 @@ $Detrav.actionIcon.commands = $Detrav.actionIcon.commands || {};
             };
             base_PluginCommand.call(this, command, args);
         };
-        $Detrav.aliased = true;
+        $Detrav.actionIcon.aliased = true;
     };
 
     $Detrav.actionIcon.commands.D_AI_VISIBLE = function (arguments) {
@@ -82,6 +82,7 @@ $Detrav.actionIcon.commands = $Detrav.actionIcon.commands || {};
         this._tileWidth = $gameMap.tileWidth();
         this._tileHeight = $gameMap.tileHeight();
         this._offsetX = -(Window_Base._iconWidth / 2);
+        this.x = this._offsetX;
         this._offsetY = -$gameMap.tileHeight() + 10;
         this.anchor.y = 1;
         this._float = 0.1;
@@ -121,7 +122,7 @@ $Detrav.actionIcon.commands = $Detrav.actionIcon.commands || {};
 
         if (this._iconIndex > 0) {
 
-            this.x = this._offsetX;
+            
             this.y = this._offsetY + this._float;
 
             this.scale.y = Math.min(this.scale.y + 0.1, 1);
@@ -210,6 +211,6 @@ $Detrav.actionIcon.commands = $Detrav.actionIcon.commands || {};
     Game_Event.prototype.getActionIcon = function () {
         return this._actionIcon;
     }
-    // ENC Game_Event with action icon
+    // END Game_Event with action icon
 
 })(); 

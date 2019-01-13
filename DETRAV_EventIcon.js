@@ -29,10 +29,10 @@
  *  PLUGIN COMMANDS have not working yet
  * ----------------------------------------------------------------------------
  *
- *   D_AI_VISIBLE FALSE        // Hide event indicator
- *   D_AI_VISIBLE TRUE         // Show event indicator
+ *   D_EI_VISIBLE FALSE        // Hide event indicator
+ *   D_EI_VISIBLE TRUE         // Show event indicator
  * 
- * by default  D_AI_VISIBLE is true
+ * by default  D_EI_VISIBLE is true
  *   
  */
 
@@ -60,7 +60,7 @@ $Detrav.commands = $Detrav.eventIcon.commands || {};
         $Detrav.eventIcon.aliased = true;
     };
 
-    $Detrav.eventIcon.commands.D_AI_VISIBLE = function (arguments) {
+    $Detrav.eventIcon.commands.D_EI_VISIBLE = function (arguments) {
         var status = eval(arguments[0].toLowerCase())
         // have to disable or eneble current eventIcon
     };

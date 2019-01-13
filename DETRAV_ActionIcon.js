@@ -1,5 +1,5 @@
 //=============================================================================
-// Detrav Action Icons
+// Detrav Event Icons
 // by Detrav (Witaly Ezepchuk / Vitaliy Ezepchuk)
 // Date: 01/07/2019
 
@@ -16,21 +16,21 @@
  * //@default zzzzz    // set default value for the parameter
  
  * @help
- *   Detrav Action Icons
+ *   Detrav Event Icons
  * ----------------------------------------------------------------------------
  * This plugin will enable you to display an icon when the event is active
  *
  * For show the icon use comment with follow content
  * 
- *   <actionIcon: id>       // The code to use in a COMMENT within and event.
+ *   <eventIcon: id>       // The code to use in a COMMENT within and event.
  *                          // id = the icon ID to use for the indicator.
  *
  * ----------------------------------------------------------------------------
  *  PLUGIN COMMANDS have not working yet
  * ----------------------------------------------------------------------------
  *
- *   D_AI_VISIBLE FALSE        // Hide action indicator
- *   D_AI_VISIBLE TRUE         // Show action indicator
+ *   D_AI_VISIBLE FALSE        // Hide event indicator
+ *   D_AI_VISIBLE TRUE         // Show event indicator
  * 
  * by default  D_AI_VISIBLE is true
  *   
@@ -38,45 +38,45 @@
 
 // define my own global variable
 var $Detrav = $Detrav || {};
-$Detrav.actionIcon = $Detrav.actionIcon || {};
-$Detrav.commands = $Detrav.actionIcon.commands || {};
+$Detrav.eventIcon = $Detrav.eventIcon || {};
+$Detrav.commands = $Detrav.eventIcon.commands || {};
 
 
 
 (function () {
 
 
-    if (!$Detrav.actionIcon.aliased) {
+    if (!$Detrav.eventIcon.aliased) {
         var base_PluginCommand = Game_Interpreter.prototype.pluginCommand;
 
         // hate this system (c) Detrav
         Game_Interpreter.prototype.pluginCommand = function (command, args) {
-            if ($Detrav.actionIcon.commands[command]) {
-                $Detrav.actionIcon.commands[command](args);
+            if ($Detrav.eventIcon.commands[command]) {
+                $Detrav.eventIcon.commands[command](args);
                 return;
             };
             base_PluginCommand.call(this, command, args);
         };
-        $Detrav.actionIcon.aliased = true;
+        $Detrav.eventIcon.aliased = true;
     };
 
-    $Detrav.actionIcon.commands.D_AI_VISIBLE = function (arguments) {
+    $Detrav.eventIcon.commands.D_AI_VISIBLE = function (arguments) {
         var status = eval(arguments[0].toLowerCase())
-        // have to disable or eneble current actionIcon
+        // have to disable or eneble current eventIcon
     };
 
-    // BEGIN Sprite_ActionIcon
+    // BEGIN Sprite_EventIcon
 
-    function Sprite_ActionIcon() {
+    function Sprite_EventIcon() {
         this.initialize.apply(this, arguments);
     }
 
     // make inheritace
-    Sprite_ActionIcon.prototype = Object.create(Sprite.prototype);
-    Sprite_ActionIcon.prototype.constructor = Sprite_ActionIcon;
+    Sprite_EventIcon.prototype = Object.create(Sprite.prototype);
+    Sprite_EventIcon.prototype.constructor = Sprite_EventIcon;
 
     // constructor
-    Sprite_ActionIcon.prototype.initialize = function (iconIndex) {
+    Sprite_EventIcon.prototype.initialize = function (iconIndex) {
         Sprite.prototype.initialize.call(this);
         this._iconIndex = iconIndex;
         this._tileWidth = $gameMap.tileWidth();
@@ -91,18 +91,18 @@ $Detrav.commands = $Detrav.actionIcon.commands || {};
     }
 
     // set icon number for this sprite
-    Sprite_ActionIcon.prototype.setActionIcon = function (actionIcon) {
-        this._iconIndex = actionIcon;
+    Sprite_EventIcon.prototype.setEventIcon = function (eventIcon) {
+        this._iconIndex = eventIcon;
         this.changeBitmap();
     }
 
     // get icon number for this sprite
-    Sprite_ActionIcon.prototype.getActionIcon = function (actionIcon) {
+    Sprite_EventIcon.prototype.getEventIcon = function (eventIcon) {
         return this._iconIndex;
     }
 
     // when bitmap is changes
-    Sprite_ActionIcon.prototype.changeBitmap = function () {
+    Sprite_EventIcon.prototype.changeBitmap = function () {
 
         var pw = Window_Base._iconWidth;
         var ph = Window_Base._iconHeight;
@@ -116,8 +116,8 @@ $Detrav.commands = $Detrav.actionIcon.commands || {};
         }
     };
 
-    // update event for up down moving the action icon
-    Sprite_ActionIcon.prototype.update = function () {
+    // update event for up down moving the event icon
+    Sprite_EventIcon.prototype.update = function () {
         Sprite.prototype.update.call(this);
 
         if (this._iconIndex > 0) {
@@ -136,9 +136,9 @@ $Detrav.commands = $Detrav.actionIcon.commands || {};
         }
     };
 
-    // END Sprite_ActionIcon
+    // END Sprite_EventIcon
 
-    // BEGIN Sprite_Character with action icon
+    // BEGIN Sprite_Character with event icon
 
     // override set character for sprite character
     var base_Sprite_Character_SetCharacter = Sprite_Character.prototype.setCharacter;
@@ -146,19 +146,19 @@ $Detrav.commands = $Detrav.actionIcon.commands || {};
 
     Sprite_Character.prototype.setCharacter = function (character) {
         base_Sprite_Character_SetCharacter.call(this, character);
-        if (character.getActionIcon) {
-            var actionIcon = character.getActionIcon();
-            if (!this.actionIcon) {
-                this.actionIcon = new Sprite_ActionIcon();
-                this.addChild(this.actionIcon);
+        if (character.getEventIcon) {
+            var eventIcon = character.getEventIcon();
+            if (!this.eventIcon) {
+                this.eventIcon = new Sprite_EventIcon();
+                this.addChild(this.eventIcon);
             }
-            if (actionIcon > 0)
-                this.actionIcon.setActionIcon(actionIcon);
+            if (eventIcon > 0)
+                this.eventIcon.setEventIcon(eventIcon);
         }
         else {
-            if (this.actionIcon) {
-                this.removeChild(this.actionIcon);
-                this.actionIcon = null;
+            if (this.eventIcon) {
+                this.removeChild(this.eventIcon);
+                this.eventIcon = null;
             }
         }
     };
@@ -168,25 +168,25 @@ $Detrav.commands = $Detrav.actionIcon.commands || {};
 
     Sprite_Character.prototype.update = function () {
         base_Sprite_Character_Update.call(this);
-        //begin Sprite_ActionIcon
-        if (this.actionIcon && this._character.getActionIcon) {
-            if (this.actionIcon.getActionIcon() != this._character.getActionIcon())
+        //begin Sprite_EventIcon
+        if (this.eventIcon && this._character.getEventIcon) {
+            if (this.eventIcon.getEventIcon() != this._character.getEventIcon())
             {
-                this.actionIcon.setActionIcon(this._character.getActionIcon());
+                this.eventIcon.setEventIcon(this._character.getEventIcon());
             }
         }
-        //end Sprite_ActionIcon
+        //end Sprite_EventIcon
     }
 
-    // END Sprite_Character with action icon
+    // END Sprite_Character with event icon
 
-    // BEGIN Game_Event with action icon
+    // BEGIN Game_Event with event icon
 
     // override clear page for game_event
     var base_Game_Event_ClearPageSettings = Game_Event.prototype.clearPageSettings;
     Game_Event.prototype.clearPageSettings = function () {
         base_Game_Event_ClearPageSettings.call(this);
-        this._actionIcon = 0;
+        this._eventIcon = 0;
     };
 
     // override setup page for game_event
@@ -195,22 +195,22 @@ $Detrav.commands = $Detrav.actionIcon.commands || {};
         base_Game_Event_SetupPageSettings.call(this);
         var page = this.page();
         var listCount = page.list.length;
-        this._actionIcon = 0;
+        this._eventIcon = 0;
         for (var i = 0; i < listCount; i++) {
             if (page.list[i].code === 108) {
-                var iconCheck = page.list[i].parameters[0].match(/<actionIcon: (.*)>/i);
+                var iconCheck = page.list[i].parameters[0].match(/<eventIcon: (.*)>/i);
                 if (iconCheck) {
-                    this._actionIcon = Number(iconCheck[1]);
+                    this._eventIcon = Number(iconCheck[1]);
                     break;
                 };
             };
         }
     };
 
-    // add new method for game event, that returns action icon
-    Game_Event.prototype.getActionIcon = function () {
-        return this._actionIcon;
+    // add new method for game event, that returns event icon
+    Game_Event.prototype.getEventIcon = function () {
+        return this._eventIcon;
     }
-    // END Game_Event with action icon
+    // END Game_Event with event icon
 
 })(); 
